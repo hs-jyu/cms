@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% block css %}
+    <link href="/static/css/search.css" rel="stylesheet">
+{% endblock %}
+{% block container %}
+    <div class="main-container">
+			<div class="search-logo"><img src="/media/img/logo3.png" width="321" height="60" alt="cms搜索logo"></div>
+		    <div class="search-from">
+		    	<form id="queryform" name="queryform" htmlEscape="true" method="get" action="/cms/search_q">
+                    {% csrf_token %}
+		        	<div class="search-text-con">
+		        		<input type="text" name="q" id="keyword" class="search-text" autocomplete="off" >
+		        	</div>
+		        	<div class="search-btn-con">
+		        		<input type="submit" value="搜一搜" class="search-btn">
+		        	</div>
+		        </form>
+		    </div>
+		</div>
+{% endblock %}

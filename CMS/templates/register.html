@@ -1,0 +1,30 @@
+{% extends 'login.html' %}
+{% block title %}
+    <title>注册页面</title>
+{% endblock %}
+{% block page %}
+    <div style="margin-left: 350px;margin-top:300px;font-size: 60px"><strong>用户注册中心</strong></div>
+{% endblock %}
+{% block login %}
+    <form action="/register_success/" method="post">
+        {% csrf_token %}
+        <br/>
+        <br/>
+        <p style="margin-left: 30px;color: red"><input type="text" name="user" placeholder="请输入用户名">{{ nameerror }}
+        </p>
+        <!--{{ nameerror }}-->
+        <p style="margin-left: 30px;">
+            <input type="password" name="password" placeholder="请输入密码">
+            <br/>
+            <span style="color: red">{{ error }}</span>
+        </p>
+        <!--<p style="margin-left: 30px">{{ error }}</p>-->
+        <br/>
+        <span style="margin-left: 30px"><input type="radio" name="sex" value="男">男</span>
+        <span style="margin-left: 30px"><input type="radio" name="sex" value="女">女</span>
+        <br/>
+        <br/>
+        <button id="btn" style="background-color: pink;margin-left: 40px;" type="submit">注册</button>
+        <input type="reset" value="重置" style="background-color: pink;margin-left: 40px">
+    </form>
+{% endblock %}

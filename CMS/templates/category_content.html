@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block basic %}
+    <!-- Main component for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        {#        {% block basic %}#}
+        {% for obj in cms %}
+            {#/cms/detail/{{ infos.id }}#}
+            {#                <a href="../detail/{{ obj.id }}">{{ obj.title }}</a>#}
+            <a href="{% url 'mycms:detail' obj.id %}">{{ obj.title }}</a>
+            <br/>
+            {{ obj.summary }}
+            <hr>
+        {% endfor %}
+        {#            {% endblock %}#}
+    </div>
+{% endblock %}

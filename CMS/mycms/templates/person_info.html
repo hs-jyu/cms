@@ -1,0 +1,103 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    <title>{{ user.username }}的个人空间</title>
+{% endblock %}
+{% comment %}不能在二级继承中新建独立继承,
+必须放在已有的继承内，如上{% endcomment %}
+{% block css %}
+    <link rel="stylesheet" href="{% static '/mycms/useradmin_base.css' %}">
+    <link rel="stylesheet" href="{% static '/css/personinfo.css' %}">
+    {% block Person_css %}
+    {% endblock %}
+    {#    <link rel="stylesheet" href="{% static '/mycms/css/personbar.css' %}">#}
+{% endblock %}
+{% block js %}
+    <script type="text/javascrpt" src="{% static '' %}"></script>
+    {% block useradmin_js %}
+    {% endblock %}
+{% endblock %}
+{% block basic %}
+    <div class="info-box clearfix">
+        {% if request.user.is_authenticated %}
+            <div class="info-side">
+                <div class="user-info">
+                    <div class="side-title">用户信息</div>
+                    <div class="user-main clearfix">
+                        <div class="user-img"><img src="/media/{{ userinfo.photo }}" alt="用户头像" width="70px" ;
+                                                   height="70px"></div>
+                        <div class="name-time">
+                            <div class="user-name">您好：{{ user.username }}</div>
+                            <div class="login-time">上次登录：{{ user.last_login }}</div>
+                        </div>
+                    </div>
+                    <div class="user-else">{{ user }}的简介:{{ userinfo.signature }}</div>
+                </div>
+                <div class="side-setting">
+                    <div class="side-title">用户设置</div>
+                    <div class="common-info"><a>基本资料</a></div>
+                    <div class="change-pw"><a href="/cms/change_password/">修改密码</a></div>
+                    <div class="change-email"><a href="#">修改邮箱</a></div>
+                    <div class="side-feedback"><a>用户反馈</a></div>
+                </div>
+                <div class="side-func">
+                    <div class="side-title">功能模块</div>
+                    <div class="write-blog"><a href="/cms/pub_content/">撰写文章</a></div>
+                    <div class="manage-blog"><a href="/cms/manage/">管理文章</a></div>
+                    <div class="upload-file"><a>上传文件</a></div>
+                    <div class="manage-upload"><a>管理上传</a></div>
+                </div>
+            </div>
+            <div class="info-main">
+                {% block info-main %}
+                    <div class="change-pw-box">
+                        <div class="info-main-title"><h3 class="title">个人信息</h3></div>
+                        <div class="user_info">
+                            <div class="header">
+                                <img src="/media/{{ userinfo.photo }}" class="head" width="70px" ;
+                                     height="70px">
+                                <p class="modify">修改头像</p>
+                            </div>
+                            <div class="right_u">
+                                <div class="right_uid">{{ user.username }}</div>
+                                <div class="cms_info">嘟嘟</div>
+                                <div class="vip">嘟嘟</div>
+                                <div class="line"></div>
+                                <div class="nick">
+                                    <span class>昵称：{{ user.username }}</span>
+                                </div>
+                                <ul class="self">
+                                    <li class="comon">简介：{{ userinfo.signature }}</li>
+                                    <li class="comon">实名：</li>
+                                    <li class="comon">性别：</li>
+                                    <li class="comon">生日：</li>
+                                    <li class="comon">地区：</li>
+                                    <li class="comon">职业：</li>
+                                    <li class="comon">爱好：</li>
+
+                                </ul>
+                                <label for="photo">
+                                    <input type="file" name="photo">
+
+                                </label>
+                                <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                      id="17031" width="200" height="200">
+                                    <path d="M724.928 976.384H339.712a143.04 143.04 0 0 1-141.888-131.008L165.76 444.544a141.44 141.44 0 0 1 33.536-103.616 141.696 141.696 0 0 1 108.288-50.048h39.296c129.856 0 164.16-107.392 164.16-164.224C511.04 63.552 560.832 16 626.944 16c44.992 0 87.296 22.4 113.152 59.904 29.76 43.072 48.576 120.896 20.992 214.976h88.256a142.528 142.528 0 0 1 140.544 164.992l-54.656 341.056a211.968 211.968 0 0 1-210.304 179.456z m-417.28-589.504c-16 1.152-27.264 6.848-35.264 16.32a46.208 46.208 0 0 0-10.944 33.728l32.064 400.832c1.92 23.872 22.208 42.624 46.208 42.624h385.216a116.48 116.48 0 0 0 115.584-98.56l54.656-341.312a46.4 46.4 0 0 0-45.76-53.632h-159.168a48.128 48.128 0 0 1-42.752-69.952c48.064-93.44 29.952-162.88 13.632-186.56a41.92 41.92 0 0 0-34.112-18.368c-13.184 0-19.904 4.928-19.904 14.656C607.104 256 517.76 386.88 346.944 386.88h-39.296zM111.104 976.384a48.064 48.064 0 0 1-47.808-44.16l-47.168-589.44a48 48 0 0 1 44.032-51.712 48.512 48.512 0 0 1 51.648 44.032l47.168 589.44a48.064 48.064 0 0 1-44.032 51.712l-3.84 0.128z"
+                                          fill="" id="17032"></path>
+                                </svg>
+                                <input type="submit" value="点击上传">
+                            </div>
+
+                        </div>
+                        <form method="post" class='change_pw_form'>
+                            {% csrf_token %}
+
+                        </form>
+                    </div>
+                {% endblock info-main %}
+            </div>
+        {% else %}
+            <div class="pls_login">请登录</div>
+        {% endif %}
+    </div>
+{% endblock %}

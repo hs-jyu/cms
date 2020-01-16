@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block title %}
+    <title>发布内容中心</title>
+
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="/static/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css">
+    <script type="text/javascript" src="/static/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="/static/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+    <script type="text/javascript">
+        var ue = UE.getEditor('editor', {
+            serverUrl: '/ueditor/controller/',
+        });
+        var content = UE.getEditor('editor').getContent()
+        SyntaxHighlighter.all();
+    </script>
+{% endblock %}
+
+{% block basic %}
+    <form action="/cms/pub_success/" method="post">
+        {% csrf_token %}
+        <hr>
+
+        <p>标题：<input type="text" name="title" placeholder="这里输入标题"></p>
+
+
+        <p>简介：<input type="text" name="summary" placeholder="这里输入简介 "></p>
+
+        <label id="editor">内容</label>
+        <p>发布人：
+            <input type="text" name="author" value='{{ request.user }}' placeholder="这里自动填充">
+        </p>
+        <hr>
+        {#        lable标签的for和其他的id一样用于绑定属性，label标签的作用在于绑定了之后，带你label里面的字符就可以选中。 这里也可以用p#}
+        <label>板块:
+            <select name="category">
+                {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+
+                {% endfor %}
+            </select>
+        </label>
+
+        {#        <input type="text" id="categorys" name="category" placeholder="这里输入板块">#}
+
+
+        <input type="submit" name="submit" value="提交">
+
+    </form>
+    <script id="editor" type="text/plain" style="max-width:100%;height:400px;"></script>
+
+{% endblock %}

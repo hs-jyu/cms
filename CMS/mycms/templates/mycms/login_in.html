@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static '/mycms/css/login.css' %}">
+{% endblock %}
+{% block basic %}
+    <div class="register">
+        <form method="post">
+            {% csrf_token %}
+            <p class="label">{{ uf.username.label }}</p>
+            {{ uf.username }}
+        <p class="is_login">{{ error.username }}</p>
+            <p class="label">{{ uf.password.label }}</p>
+            {{ uf.password }}
+           <p class="is_login">{{ error.password }}</p>
+            {% if error == True %}
+                <p class="is_login">用户名或者密码错误</p>
+            {% endif %}
+        <span style="color: red">{{ uf.username.error_messages }}</span>
+            <input type="submit" value="登录" class="submit">
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    <title>{{ user.username }}的内容管理中心</title>
+{% endblock %}
+{% block category %}
+    <li class="{{ status }}"><a href="/cms/manage/">全部</a></li>
+    {% for category in categories %}
+        {% ifequal category.id   category_id %}
+            <li class="active"><a href="/cms/person_category/{{ category.id }}">{{ category.name }}</a></li>
+        {% else %}
+            <li class=""><a href="/cms/person_category/{{ category.id }}">{{ category.name }}</a></li>
+        {% endifequal %}
+    {% endfor %}
+{% endblock %}
+{% block basic %}
+    <div class="jumbotron">
+        {% for obj in infos %}
+            <div>
+                <a href="{% url 'mycms:detail' obj.id %}">{{ obj.title }}</a>
+                <br/>
+                {{ obj.summary }}
+            </div>
+            <div class="info-box d-flex align-content-center">
+                <p>{{ obj.create_time|date:"Y-m-d H:i:s" }}</p>
+                <p class="point"></p>
+                <p>阅读数 {{ obj.view_count }}</p>
+                <p class="point"></p>
+                <p>排名 {{ obj.ranking }}</p>
+                <p class="point"></p>
+                <a href="/cms/delete/{{ obj.id }}">删除</a>
+            </div>
+            <br>
+            <hr>
+        {% endfor %}
+    </div>
+{% endblock %}

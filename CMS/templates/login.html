@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--{% load static %}-->
+
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>登录页面</title>
+    {% endblock %}
+    <style>
+        label {
+            width: 80px;
+            text-align: right;
+            display: inline-block;
+            /*background: greenyellow;*/
+        }
+
+        body {
+            background: #ffffff url("/media/img/1.jpg");
+            background-size: 100%;
+        }
+
+        div#user {
+            width: 350px;
+            height: 300px;
+            background: url("/media/img/2.jpeg");
+            /*background-color: blue;*/
+            position: absolute;
+
+            left: 1000px;
+            top: 200px;
+
+        }
+    </style>
+</head>
+<body>
+{% block page %}
+    <div style="margin-left: 350px;margin-top:300px;font-size: 60px"><strong>用户登录中心</strong></div>
+{% endblock %}
+<div id=user>
+    {% block login %}
+        <form action="/acc_login/" method="post">
+            {% csrf_token %}
+            <br/>
+            <br/>
+            <p style="margin-left: 30px;color: red"><input type="text" name="user" placeholder="请输入用户名">{{ nameerror }}
+            </p>
+            <!--{{ nameerror }}-->
+            <p style="margin-left: 30px;">
+                <input type="password" name="password" placeholder="请输入密码">
+                <span style="color: red">{{ error }}</span>
+            </p>
+            <!--<p style="margin-left: 30px">{{ error }}</p>-->
+            <br/>
+            <span style="margin-left: 30px"><input type="radio" name="sex" value="男">男</span>
+            <span style="margin-left: 30px"><input type="radio" name="sex" value="女">女</span>
+            <br/>
+            <br/>
+            <button id="btn" style="background-color:wheat;margin-left: 40px;" type="submit">登录</button>
+            <input type="reset" value="重置" style="background-color: pink;margin-left: 40px">
+        </form>
+    {% endblock %}
+    <div id='footer'>
+        <p style="text-align: center;clear: both"> &copy;版权所在</p>
+        <span style="clear: both;right:0;position: absolute;bottom: 0">
+        <a href="/register/" style="">注册</a>
+    </span>
+    </div>
+</div>
+</body>
+</html>

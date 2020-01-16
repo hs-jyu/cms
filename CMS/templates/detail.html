@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{#<!-- 写了extends不能够写body -->#}
+{#使用评论模板需要现在html加载一下#}
+{% load comments %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="/static/ueditor/themes/iframe.css">
+{% endblock %}
+{% block basic %}
+    <div class="jumbotron">
+        <h3 style="text-align: center">{{ detail.title }}</h3>
+        <hr>
+        <div class="info-box d-flex align-content-center">
+            <p>发布时间 ：{{ detail.create_time|date:"Y-m-d H:i:s" }}</p>
+            <p class="point"></p>
+            <p>阅读数 {{ detail.view_count }}</p>
+
+        </div>
+        <br/>
+    <hr>
+        <h5>{{ detail.summary }}</h5>
+        <p>{{ detail.category }}</p>
+        <hr>
+        {#    加上safe的原因是告诉django不要转义，django框架会将标签转义 按照原格式输出#}
+
+        {{ detail.content|safe }}
+        <hr>
+        <div>
+            {#    reversed的意思是评论按照时间越新的越靠前#}
+
+            {#    下面这一行的意思是通过detail的id，也就是这篇文章的id去comments里面搜索。#}
+            {#{%  render_comment_list for detail %}#}
+            {% get_comment_count for detail as count %}评论数{{ count }}
+            <br/>
+            {% if user.is_authenticated %}
+
+                {#                {% render_comment_list for detail %}#}
+                {% get_comment_list for detail as coments_lsit %}
+                {% for comment in coments_lsit reversed %}
+                    {#                    {% print(comment) %}#}
+
+                    <span style="font-size: smaller">{{ comment.submit_date|date:"Y-m-d H:i:s" }}</span>
+                    <p style="font-size: 14px"><span>{{ comment.user }}:</span>{{ comment.comment }}</p>
+                    {#                <p>{{ comment }}</p>#}
+                {% endfor %}
+                <form action="/cms/comments/" method="post">
+                    {% csrf_token %}
+                    <textarea name="comments" cols="30" rows="5"></textarea>
+                    <input type='hidden' name='cms_id' value="{{ detail.id }}">
+                    <input type="submit" value="submit">
+                </form>
+            {% else %}
+                <p><a href="/login/">登录</a>之后才可以评论</p>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}

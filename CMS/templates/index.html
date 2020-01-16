@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://v3.bootcss.com/examples/navbar-fixed-top/ -->
+<html lang="zh-CN">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/media/img/logo3.png">
+    {% block title %}
+        <title>导航开始</title>
+    {% endblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    {% block css %}
+    {% endblock %}
+    {% block js %}
+    {% endblock %}
+    <!-- Custom styles for this template -->
+    <link href="/static/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="/static/css/delete.css" rel="stylesheet">
+
+</head>
+
+<body rlt="1" style="">
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/cms/index/">heyson 内容发布系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% block category %}
+                    <li class="{{ status }}"><a href="/cms/index/">全部</a></li>
+                    {% for category in categories %}
+                        {% ifequal category.id   category_id %}
+                            <li class="active"><a href="/cms/category/{{ category.id }}">{{ category.name }}</a></li>
+                        {% else %}
+                            <li class=""><a href="/cms/category/{{ category.id }}">{{ category.name }}</a></li>
+                        {% endifequal %}
+                    {% endfor %}
+                {% endblock %}
+
+                <div class="search_bar">
+                    <form action="/cms/search_q" method="get" autocomplete="off">
+                        {% csrf_token %}
+                        <input class="input_search" autocomplete="off" name='q' placeholder="python"
+                               value="python">
+                        <button class="btn-search" style="border:none" type="submit">
+                            <img src="/media/img/sou.png" width="32px" height="32px">
+
+                        </button>
+                    </form>
+                </div>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav navbar-nav navbar-left">
+                    <a href="#" class="dropdown-toggle"
+                       data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {% if user.is_authenticated %}
+                            {{ user.username }}
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout/">退出登录</a></li>
+                                <li><a href="/cms/personinfo">个人中心</a></li>
+                                <li><a href="/cms/pub_content/">发布内容</a></li>
+                            </ul>
+                        {% else %}
+                            <a href="/login/">点击登录</a>
+                        {% endif %}
+                </li>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+{% block container %}
+    <div class="container">
+        <!--从这里设置模板，其他页面可以重复利用这里得样式 这个范围是指的是两个之外的可以继承，里面的需要重写-->
+        {% block basic %}
+            <!-- Main component for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                {% load comments %}
+                {#        {% block basic %}#}
+                {% for obj in infos %}
+                    {#/cms/detail/{{ infos.id }}#}
+                    {#                <a href="../detail/{{ obj.id }}">{{ obj.title }}</a>#}
+                    <div>
+                        <a href="{% url 'mycms:detail' obj.id %}">{{ obj.title }}</a>
+                        <br/>
+                        {{ obj.summary }}
+                    </div>
+                    <br/>
+                    <dl class="list_userbar">
+                        {#                <dt><a class="user_img"><img src="/media/{{ obj.author__user.user }}"></a></dt>#}
+                        <dd class="name">{{ obj.author }}</dd>
+                        <div class="interactive floatR">
+                            <dd>
+                                <a href="#">
+                                    <sapn class="text">
+                                        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                             id="17031" width="200" height="200">
+                                            <path d="M724.928 976.384H339.712a143.04 143.04 0 0 1-141.888-131.008L165.76 444.544a141.44 141.44 0 0 1 33.536-103.616 141.696 141.696 0 0 1 108.288-50.048h39.296c129.856 0 164.16-107.392 164.16-164.224C511.04 63.552 560.832 16 626.944 16c44.992 0 87.296 22.4 113.152 59.904 29.76 43.072 48.576 120.896 20.992 214.976h88.256a142.528 142.528 0 0 1 140.544 164.992l-54.656 341.056a211.968 211.968 0 0 1-210.304 179.456z m-417.28-589.504c-16 1.152-27.264 6.848-35.264 16.32a46.208 46.208 0 0 0-10.944 33.728l32.064 400.832c1.92 23.872 22.208 42.624 46.208 42.624h385.216a116.48 116.48 0 0 0 115.584-98.56l54.656-341.312a46.4 46.4 0 0 0-45.76-53.632h-159.168a48.128 48.128 0 0 1-42.752-69.952c48.064-93.44 29.952-162.88 13.632-186.56a41.92 41.92 0 0 0-34.112-18.368c-13.184 0-19.904 4.928-19.904 14.656C607.104 256 517.76 386.88 346.944 386.88h-39.296zM111.104 976.384a48.064 48.064 0 0 1-47.808-44.16l-47.168-589.44a48 48 0 0 1 44.032-51.712 48.512 48.512 0 0 1 51.648 44.032l47.168 589.44a48.064 48.064 0 0 1-44.032 51.712l-3.84 0.128z"
+                                                  fill="" id="17032"></path>
+                                        </svg>
+                                    </sapn>
+                                    <span class="num">{{ obj.ranking }}</span>
+                                </a>
+                            </dd>
+                            <div class="interval" style="display: block"></div>
+                            <dd class="read_num"><a href="{% url 'mycms:detail' obj.id %}"><span>
+                                <svg class="icon eye" viewBox="0 0 1433 1024" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg" p-id="16883" width="200" height="200">
+                                    <path d="M720.69629629 932.6176963c-213.05768889 0-407.36918519-120.58848889-582.93448888-361.67534074-23.88337036-32.71571111-23.88337036-85.169 0-117.88471112C313.32711111 211.97079259 507.63860741 91.3823037 720.69629629 91.3823037s407.36918519 120.58848889 582.9344889 361.67534074c23.88337036 32.71571111 23.88337036 85.169 0 117.88471112C1128.06548147 812.02920741 933.75398519 932.6176963 720.69629629 932.6176963z m0-721.00740741C542.51734074 211.61028889 377.85727408 309.39691852 222.48017777 512 377.85727408 714.60308148 542.4272148 812.38971111 720.69629629 812.38971111c178.17895556 0 342.83902223-97.78662964 498.21611851-300.38971111C1063.53531852 309.39691852 898.96537777 211.61028889 720.69629629 211.61028889z m0 495.69259259a195.30288148 195.30288148 0 1 1 0-390.60576296 195.30288148 195.30288148 0 0 1 0 390.60576296zM720.69629629 602.12592592a90.12592592 90.12592592 0 1 0 0-180.25185184 90.12592592 90.12592592 0 0 0 0 180.25185184z"
+                                          p-id="16884" fill=""></path>
+                                </svg>
+
+                        </span>
+                                <span class="num">{{ obj.view_count }}</span></a></dd>
+                            <div class="interval" style="display: block"></div>
+                            <dd class="common_num"><a href="{% url 'mycms:detail' obj.id %}">
+                            <span class="text"><svg class="icon" viewBox="0 0 1088 1024" version="1.1"
+                                                    xmlns="http://www.w3.org/2000/svg" p-id="16736" width="200"
+                                                    height="200">
+                                    <path d="M384 446.656a64.064 64.064 0 0 1-96.32 56.512A64 64 0 1 1 384 446.656zM576 448a64 64 0 1 1-128 0 64 64 0 0 1 128 0z m192 0a64 64 0 1 1-128 0 64 64 0 0 1 128 0z"
+                                          fill="" p-id="16737"></path>
+                                    <path d="M217.28 1008a99.392 99.392 0 0 1-99.072-99.072v-107.2A300.352 300.352 0 0 1 16 574.656V319.36A303.744 303.744 0 0 1 319.36 16h408.512a303.68 303.68 0 0 1 303.36 303.36v255.36a303.68 303.68 0 0 1-303.36 303.36H429.184L275.2 989.248a98.368 98.368 0 0 1-57.92 18.752z m102.08-896a207.552 207.552 0 0 0-207.36 207.36v255.36c0 65.856 30.272 126.336 82.944 165.952 12.096 9.088 19.2 23.232 19.2 38.4l3.072 132.992a2.88 2.88 0 0 0 1.728-0.576l166.592-120.32a48 48 0 0 1 28.096-9.088h314.24a207.552 207.552 0 0 0 207.36-207.36V319.36a207.552 207.552 0 0 0-207.36-207.36H319.36z"
+                                          fill="" p-id="16738"></path>
+                                </svg></span>
+                                {% get_comment_count for obj as count %}
+                                <span class="num">{{ count }}</span>
+                            </a></dd>
+                        </div>
+                    </dl>
+
+                    {#       这里设计的样式不太好看 不对称，改用上面的样式         <div class="box">#}
+                    {#                    <div class="author">#}
+                    {#                        {{ obj.author }}#}
+                    {#                    </div>#}
+                    {#                    <div class="info-box d-flex align-content-center">#}
+                    {#                        <p>{{ obj.create_time|date:"Y-m-d H:i:s" }}</p>#}
+                    {#                        <p class="point"></p>#}
+                    {#                        <p>#}
+                    {#                            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"#}
+                    {#                                 id="17031" width="200" height="200">#}
+                    {#                                <path d="M724.928 976.384H339.712a143.04 143.04 0 0 1-141.888-131.008L165.76 444.544a141.44 141.44 0 0 1 33.536-103.616 141.696 141.696 0 0 1 108.288-50.048h39.296c129.856 0 164.16-107.392 164.16-164.224C511.04 63.552 560.832 16 626.944 16c44.992 0 87.296 22.4 113.152 59.904 29.76 43.072 48.576 120.896 20.992 214.976h88.256a142.528 142.528 0 0 1 140.544 164.992l-54.656 341.056a211.968 211.968 0 0 1-210.304 179.456z m-417.28-589.504c-16 1.152-27.264 6.848-35.264 16.32a46.208 46.208 0 0 0-10.944 33.728l32.064 400.832c1.92 23.872 22.208 42.624 46.208 42.624h385.216a116.48 116.48 0 0 0 115.584-98.56l54.656-341.312a46.4 46.4 0 0 0-45.76-53.632h-159.168a48.128 48.128 0 0 1-42.752-69.952c48.064-93.44 29.952-162.88 13.632-186.56a41.92 41.92 0 0 0-34.112-18.368c-13.184 0-19.904 4.928-19.904 14.656C607.104 256 517.76 386.88 346.944 386.88h-39.296zM111.104 976.384a48.064 48.064 0 0 1-47.808-44.16l-47.168-589.44a48 48 0 0 1 44.032-51.712 48.512 48.512 0 0 1 51.648 44.032l47.168 589.44a48.064 48.064 0 0 1-44.032 51.712l-3.84 0.128z"#}
+                    {#                                      fill="" id="17032"></path>#}
+                    {#                            </svg>#}
+                    {#                            <span>{{ obj.ranking }}</span>#}
+                    {#                        </p>#}
+                    {##}
+                    {#                        <p class="point"></p>#}
+                    {#                        <p>#}
+                    {#                            <a href="{% url 'mycms:detail' obj.id %}">#}
+                    {#                                <svg class="icon eye" viewBox="0 0 1433 1024" version="1.1"#}
+                    {#                                     xmlns="http://www.w3.org/2000/svg" p-id="16883" width="200" height="200">#}
+                    {#                                    <path d="M720.69629629 932.6176963c-213.05768889 0-407.36918519-120.58848889-582.93448888-361.67534074-23.88337036-32.71571111-23.88337036-85.169 0-117.88471112C313.32711111 211.97079259 507.63860741 91.3823037 720.69629629 91.3823037s407.36918519 120.58848889 582.9344889 361.67534074c23.88337036 32.71571111 23.88337036 85.169 0 117.88471112C1128.06548147 812.02920741 933.75398519 932.6176963 720.69629629 932.6176963z m0-721.00740741C542.51734074 211.61028889 377.85727408 309.39691852 222.48017777 512 377.85727408 714.60308148 542.4272148 812.38971111 720.69629629 812.38971111c178.17895556 0 342.83902223-97.78662964 498.21611851-300.38971111C1063.53531852 309.39691852 898.96537777 211.61028889 720.69629629 211.61028889z m0 495.69259259a195.30288148 195.30288148 0 1 1 0-390.60576296 195.30288148 195.30288148 0 0 1 0 390.60576296zM720.69629629 602.12592592a90.12592592 90.12592592 0 1 0 0-180.25185184 90.12592592 90.12592592 0 0 0 0 180.25185184z"#}
+                    {#                                          p-id="16884" fill=""></path>#}
+                    {#                                </svg>#}
+                    {#                                <span>{{ obj.view_count }}</span></a></p>#}
+                    {#                        <p class="point"></p>#}
+                    {#                        <p>排名 {{ obj.ranking }}</p>#}
+                    {#                        <p class="point"></p>#}
+                    {#                        <p>{% get_comment_count for obj as count %}#}
+                    {#                            <a href="{% url 'mycms:detail' obj.id %}">#}
+                    {#                                <svg class="icon" viewBox="0 0 1088 1024" version="1.1"#}
+                    {#                                     xmlns="http://www.w3.org/2000/svg" p-id="16736" width="200" height="200">#}
+                    {#                                    <path d="M384 446.656a64.064 64.064 0 0 1-96.32 56.512A64 64 0 1 1 384 446.656zM576 448a64 64 0 1 1-128 0 64 64 0 0 1 128 0z m192 0a64 64 0 1 1-128 0 64 64 0 0 1 128 0z"#}
+                    {#                                          fill="" p-id="16737"></path>#}
+                    {#                                    <path d="M217.28 1008a99.392 99.392 0 0 1-99.072-99.072v-107.2A300.352 300.352 0 0 1 16 574.656V319.36A303.744 303.744 0 0 1 319.36 16h408.512a303.68 303.68 0 0 1 303.36 303.36v255.36a303.68 303.68 0 0 1-303.36 303.36H429.184L275.2 989.248a98.368 98.368 0 0 1-57.92 18.752z m102.08-896a207.552 207.552 0 0 0-207.36 207.36v255.36c0 65.856 30.272 126.336 82.944 165.952 12.096 9.088 19.2 23.232 19.2 38.4l3.072 132.992a2.88 2.88 0 0 0 1.728-0.576l166.592-120.32a48 48 0 0 1 28.096-9.088h314.24a207.552 207.552 0 0 0 207.36-207.36V319.36a207.552 207.552 0 0 0-207.36-207.36H319.36z"#}
+                    {#                                          fill="" p-id="16738"></path>#}
+                    {#                                </svg>#}
+                    {#                                {{ count }}</a></p>#}
+                    {#                    </div>#}
+                    {#                </div>#}
+
+                    <hr>
+                {% endfor %}
+                {#            {% endblock %}#}
+            </div>
+        {% endblock %}
+    </div> <!-- /container -->
+{% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/js/jquery.min.js"><\/script>')</script>
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+
+<div id="qds" style="display:none;"></div>
+</body>
+</html>
